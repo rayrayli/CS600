@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Search Engine for CS600 Final</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+        crossorigin="anonymous">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-default" >
+      <div class="container-fluid">
+          <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" >
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#" style="color: rgb(0, 0, 0);">Search Engine for CS600 Final Project</a>
+          </div>
+          <p class="navbar-text navbar-right" style="margin-right:10px;color: rgb(0, 0, 0);">RuiLi</p>
+          <form class="navbar-form navbar-right" method="GET" action=""> 
+            <div class="form-group  dropdown open" id="nav_search"> 
+            <input class="form-control" name="key" id="nav_search_input" placeholder="Search"> 
+              
+
+            </div> <button type="submit" class="btn btn-default">Search</button> </form>
+          
+      </div>
+    </nav>
+
+    {% if key!=False %}
+    <div class="col-md-12 column">
+        <h3>Result for keyword: {{key}}</h3>
+    </div>
+    {% endif %}
+
+    {% if ol==False %}
+
+    <div class="col-md-12 column">
+      <form method="GET" action="" style="margin-left:300px;margin-top:30px">
+        <div class="col-md-8 column"><input name="key" type="text" class="form-control" placeholder="Algorithm" ></div>
+        <button type="submit" class="btn btn-default btn-primary btn-shadow">Search</button>
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endif %}
+
+  {% if ol==None %}
+  <div class="col-md-12 column">
+    <div class="alert alert-danger" role="alert">
+      <strong>Oh snap!</strong> Change a few things up and try submitting again.
+    </div>
+  </div>
+  {% else %}
+
+  {% if ol!=False and ol!=None %}
+  <div class="col-md-12 column">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>reference</th>
+          <th>word count</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in rank %}
+          <tr>
+            <th>{{loop.index}}</th>
+            <td><a href={{r}}>{{r}}</a></td>
+            <td>{{ol[r]}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+  {% endif %}
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+        crossorigin="anonymous"></script>
+
+    <script>
+      $("#nav_search_input").keyup(function(){
+          let key = $("#nav_search_input").val()
+          var requestConfig = {
+                  method: "GET",
+                  url: "/getRecommendKey?key="+key,
+                  contentType: 'application/json',
+                  // dataType: 'JSON',
+                  // data: JSON.stringify({
+                  //     "key" : key
+                  // })
+          };
+          $.ajax(requestConfig).then(function (resObj) {
+                $("#recommand_key_ul").remove()
+                $("#nav_search").append(resObj.result)
+                if(resObj.success==1){
+                    //debugger
+                }else{
+                    //debugger
+                }
+          });
+
+      })
+    </script>
+
+    
+</body>
+
+</html>
+
